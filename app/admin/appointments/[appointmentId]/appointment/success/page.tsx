@@ -21,7 +21,7 @@ const RequestSuccess = async ({
   );
 
   return (
-    <div className="flex h-screen max-h-screen w-full px-[5%]">
+    <div className="flex h-screen max-h-screen overflow-auto w-full px-[5%]">
       <div className="success-img">
         <Link href="/">
           <Image
@@ -55,7 +55,7 @@ const RequestSuccess = async ({
               alt="doctor"
               width={100}
               height={100}
-              className="size-6"
+              className="size-6 rounded-full"
             />
             <p className="whitespace-nowrap">Dr. {appointment?.primaryPhysician?.name}</p>
           </div>
@@ -70,11 +70,20 @@ const RequestSuccess = async ({
           </div>
         </section>
 
-        <Button variant="outline" className="shad-primary-btn" asChild>
-          <Link href={`/admin/appointments/new/appointment`}>
-            New Appointment
-          </Link>
-        </Button>
+        <section className="flex justify-center items-center gap-5">
+          <Button variant="outline" className="shad-primary-btn" asChild>
+            <Link href={`/admin/appointments/new/appointment`}>
+              New Appointment
+            </Link>
+          </Button>
+
+          <Button variant="outline" className="shad-primary-btn" asChild>
+            <Link href={`/admin/appointments`}>
+              Appointment List
+            </Link>
+          </Button>
+
+        </section>
 
         <p className="copyright">© 2024 CarePluse</p>
       </div>

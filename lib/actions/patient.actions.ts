@@ -294,8 +294,6 @@ export const updateDoctor = async (
         updateDoctorData["identificationNumber"] = doctor.identificationNumber;
         updateDoctorData["authPassword"] = doctor.authPassword;
 
-        console.log(updateDoctorData);
-
         const doctors = await databases.updateDocument(
             DATABASE_ID!,
             DOCTOR_COLLECTION_ID!,
@@ -309,5 +307,34 @@ export const updateDoctor = async (
             "An error occurred while retrieving the doctor details:",
             error
         );
+    }
+};
+
+// REGISTER PATIENT
+export const updatePatient = async (
+    patientId: string,
+    patient: UpdateUserParams
+) => {
+    try {
+        const updatedPatientData: any = { ...patient };
+
+        if (patient.identificationDocument) {
+            const file = await uploadFile(patient.identificationDocument);
+            updatedPatientData["identificationDocumentID"] = file.$id;
+            updatedPatientData["identificationDocumentURL"] =
+                `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`;
+        }
+
+        console.log(updatedPatientData);
+        const newPatient = await databases.updateDocument(
+            DATABASE_ID!,
+            PATIENT_COLLECTION_ID!,
+            patientId,
+            updatedPatientData
+        );
+
+        return parseStringify(newPatient);
+    } catch (error) {
+        console.error("An error occurred while updating a patient:", error);
     }
 };

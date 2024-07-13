@@ -43,7 +43,7 @@ export const AppointmentForm = ({
         resolver: zodResolver(AppointmentFormValidation),
         defaultValues: {
             patient: appointment ? appointment?.patient.$id : "",
-            primaryPhysician: appointment ? appointment?.primaryPhysician.doctorID : "",
+            primaryPhysician: appointment ? appointment?.primaryPhysician.$id : "",
             schedule: appointment
                 ? new Date(appointment?.schedule!)
                 : new Date(Date.now()),
@@ -260,11 +260,11 @@ export const AppointmentForm = ({
                     {buttonLabel}
                 </SubmitButton>
             </form>
-            <footer className="w-full flex justify-center items-center">
+            {type === "create" && <footer className="w-full flex justify-center items-center">
                 <p className="copyright mt-10 py-12 text-center">
                     © {new Date().getFullYear()} Laugh Logic Labs
                 </p>
-            </footer>
+            </footer>}
         </Form>
     );
 };

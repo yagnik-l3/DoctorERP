@@ -1,8 +1,8 @@
 import { Models } from "node-appwrite";
 
 export interface Patient extends Models.Document {
-    profilePictureURL: string | undefined;
-    profilePictureID: string | undefined;
+    identificationDocumentURL: string | undefined;
+    identificationDocumentID: string | undefined;
     name: string;
     email: string;
     phone: string;
@@ -22,6 +22,8 @@ export interface Patient extends Models.Document {
     identificationType: string | undefined;
     identificationNumber: string | undefined;
     identificationDocument: FormData | undefined;
+    treatmentConsent: boolean;
+    disclosureConsent: boolean;
     privacyConsent: boolean;
 }
 

@@ -13,6 +13,7 @@ import Link from "next/link";
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
 import { useRouter } from "next/router";
+import { Button } from "../ui/button";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -22,27 +23,24 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
-    accessorKey: "patient",
     header: "Patient",
     cell: ({ row }) => {
       const appointment = row.original;
-      return <p className="text-14-medium ">{appointment.patient?.name}</p>;
+      return <p className="text-14-medium text-center">{appointment.patient?.name}</p>;
     },
   },
   {
-    accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
       const appointment = row.original;
       return (
-        <div className="min-w-[115px]">
+        <div className="flex items-center justify-center">
           <StatusBadge status={appointment.status} />
         </div>
       );
     },
   },
   {
-    accessorKey: "schedule",
     header: "Appointment",
     cell: ({ row }) => {
       const appointment = row.original;
@@ -54,13 +52,12 @@ export const columns: ColumnDef<Appointment>[] = [
     },
   },
   {
-    accessorKey: "primaryPhysician",
     header: "Doctor",
     cell: ({ row }) => {
       const appointment = row.original;
       const doctor = appointment.primaryPhysician
       return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 justify-center">
           <Image
             src={doctor?.profilePictureURL! ?? DEFAULT_IMG}
             alt="doctor"
@@ -80,7 +77,7 @@ export const columns: ColumnDef<Appointment>[] = [
       const appointment = row.original;
 
       return (
-        <div className="flex gap-1">
+        <div className="flex gap-1 items-center justify-center">
           <AppointmentModal
             appointment={appointment}
             type="schedule"
@@ -93,6 +90,12 @@ export const columns: ColumnDef<Appointment>[] = [
             title="Cancel Appointment"
             description="Are you sure you want to cancel your appointment?"
           />
+          <Button
+            variant="ghost"
+            className='text-red-500'
+          >
+            Delete
+          </Button>
         </div>
       );
     },
@@ -210,9 +213,11 @@ export const doctorColumns: ColumnDef<Doctor>[] = [
     cell: ({ row }) => {
       const doctor = row.original;
       return (
-        <Link href={`/admin/doctors/${doctor.doctorID}/doctor`} className="">
-          <Eye height={24} width={24} />
-        </Link>
+        <div className="flex gap-8 justify-center items-center">
+          <Link href={`/admin/doctors/${doctor.doctorID}/doctor`} className="">
+            <Eye height={24} width={24} />
+          </Link>
+        </div>
       );
     },
   },

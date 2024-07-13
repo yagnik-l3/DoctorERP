@@ -15,8 +15,9 @@ import {
     GenderOptions,
     IdentificationTypes,
     PatientFormDefaultValues,
+    setPatientDefaultValue,
 } from "@/constants";
-import { getDoctors, registerPatient } from "@/lib/actions/patient.actions";
+import { getDoctors, registerPatient, updatePatient } from "@/lib/actions/patient.actions";
 import { PatientFormValidation } from "@/lib/validation";
 
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,20 +34,17 @@ const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
 
     const form = useForm<z.infer<typeof PatientFormValidation>>({
         resolver: zodResolver(PatientFormValidation),
-        defaultValues: {
-            ...PatientFormDefaultValues,
-        },
+        defaultValues: setPatientDefaultValue(PatientFormDefaultValues, patient),
     });
 
     const onSubmit = (flag: boolean) => async (values: z.infer<typeof PatientFormValidation>) => {
         setIsLoading(true);
-        console.log(values);
 
         // Store file info in form data as
         let formData;
         if (
             values.identificationDocument &&
-            values.identificationDocument?.length > 0
+            values.identificationDocument?.length > 0 && typeof values.identificationDocument[0] !== "string"
         ) {
             const blobFile = new Blob([values.identificationDocument[0]], {
                 type: values.identificationDocument[0].type,
@@ -97,6 +95,62 @@ const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
         setIsLoading(false);
     };
 
+    const onUpdate = async (values: z.infer<typeof PatientFormValidation>) => {
+        setIsLoading(true);
+
+        // Store file info in form data as
+        let formData;
+        if (
+            values.identificationDocument &&
+            values.identificationDocument?.length > 0 && typeof values.identificationDocument[0] !== "string"
+        ) {
+            const blobFile = new Blob([values.identificationDocument[0]], {
+                type: values.identificationDocument[0].type,
+            });
+
+            formData = new FormData();
+            formData.append("blobFile", blobFile);
+            formData.append("fileName", values.identificationDocument[0].name);
+        }
+
+        try {
+            const patientData = {
+                name: values.name,
+                email: values.email,
+                phone: values.phone,
+                birthDate: new Date(values.birthDate),
+                gender: values.gender,
+                address: values.address,
+                occupation: values.occupation,
+                emergencyContactName: values.emergencyContactName,
+                emergencyContactNumber: values.emergencyContactNumber,
+                primaryPhysician: values.primaryPhysician,
+                insuranceProvider: values.insuranceProvider,
+                insurancePolicyNumber: values.insurancePolicyNumber,
+                allergies: values.allergies,
+                currentMedication: values.currentMedication,
+                familyMedicalHistory: values.familyMedicalHistory,
+                pastMedicalHistory: values.pastMedicalHistory,
+                identificationType: values.identificationType,
+                identificationNumber: values.identificationNumber,
+                identificationDocument: values.identificationDocument
+                    ? formData
+                    : undefined,
+                treatmentConsent: values.treatmentConsent,
+                disclosureConsent: values.disclosureConsent,
+                privacyConsent: values.privacyConsent,
+            };
+            const newPatient = await updatePatient(patient?.$id!, patientData);
+            if (newPatient) {
+                router.push(`/admin/patients`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
+        setIsLoading(false);
+    };
+
     const fetchDoctors = async () => {
         const doctors = await getDoctors();
         setDoctors(doctors);
@@ -104,7 +158,10 @@ const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
 
     useEffect(() => {
         fetchDoctors();
+        // form.setValue("primaryPhysician", patient?.primaryPhysician.$id!);
     }, []);
+
+    const btnName = patient ? "Update" : "Submit";
 
     return (
         <Form {...form}>
@@ -401,13 +458,13 @@ const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
                 </section>
 
                 <section className="flex flex-col gap-6 xl:flex-row">
-                    <SubmitButton onClick={form.handleSubmit(onSubmit(false))} isLoading={isLoading}>
-                        Create Patient
+                    <SubmitButton onClick={form.handleSubmit(patient ? onUpdate : onSubmit(false))} isLoading={isLoading}>
+                        {btnName} Patient
                     </SubmitButton>
 
-                    <SubmitButton onClick={form.handleSubmit(onSubmit(true))} isLoading={isLoading}>
-                        Create Patient and Appointment
-                    </SubmitButton>
+                    {btnName === "Submit" && <SubmitButton onClick={form.handleSubmit(onSubmit(true))} isLoading={isLoading}>
+                        {btnName} Patient and Appointment
+                    </SubmitButton>}
                 </section>
             </form>
             <footer className="w-full flex justify-center items-center">

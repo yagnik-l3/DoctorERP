@@ -1,5 +1,5 @@
-import { DoctorFormValidation } from "@/lib/validation";
-import { Doctor } from "@/types/appwrite.types";
+import { DoctorFormValidation, PatientFormValidation } from "@/lib/validation";
+import { Doctor, Patient } from "@/types/appwrite.types";
 import { z } from "zod";
 
 export const GenderOptions = ["Male", "Female", "Other"];
@@ -90,6 +90,43 @@ export const setDoctorDefaultValue = (
         };
     } else {
         return DoctorFormDefaultValues;
+    }
+};
+
+export const setPatientDefaultValue = (
+    PatientFormDefaultValues: z.infer<typeof PatientFormValidation>,
+    patient: Patient | undefined
+) => {
+    if (patient) {
+        return {
+            name: patient.name,
+            email: patient.email,
+            phone: patient.phone,
+            birthDate: new Date(patient.birthDate),
+            gender: (patient.gender as Gender) ?? (GenderOptions[0] as Gender),
+            address: patient.address,
+            occupation: patient.occupation,
+            emergencyContactName: patient.emergencyContactName,
+            emergencyContactNumber: patient.emergencyContactNumber,
+            primaryPhysician: patient.primaryPhysician.$id,
+            insuranceProvider: patient.insuranceProvider,
+            insurancePolicyNumber: patient.insurancePolicyNumber,
+            pastMedicalHistory: patient.pastMedicalHistory,
+            familyMedicalHistory: patient.familyMedicalHistory,
+            identificationType:
+                patient.identificationType ?? IdentificationTypes[0],
+            identificationNumber: patient.identificationNumber ?? "",
+            identificationDocument: patient.identificationDocumentURL
+                ? [patient.identificationDocumentURL]
+                : [],
+            allergies: patient.allergies,
+            currentMedication: patient.currentMedication,
+            treatmentConsent: patient.treatmentConsent,
+            disclosureConsent: patient.disclosureConsent,
+            privacyConsent: patient.privacyConsent,
+        };
+    } else {
+        return PatientFormDefaultValues;
     }
 };
 
