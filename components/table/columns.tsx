@@ -12,6 +12,7 @@ import { Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
+import { useRouter } from "next/router";
 
 export const columns: ColumnDef<Appointment>[] = [
   {
@@ -106,26 +107,32 @@ export const patientsColumn: ColumnDef<Patient>[] = [
     },
   },
   {
-    // accessorKey: "primaryPhysician",
     header: "Patient",
     cell: ({ row }) => {
       const patient = row.original;
+      return <p className="text-14-medium ">{patient.name}</p>;
+    },
+  },
+  {
+    header: "Physician",
+    cell: ({ row }) => {
+      const patient = row.original;
+
       return (
         <div className="flex items-center gap-3">
           <Image
-            src={patient?.profilePictureURL! ?? DEFAULT_IMG}
+            src={patient?.primaryPhysician?.profilePictureURL ?? DEFAULT_IMG}
             alt="doctor"
             width={100}
             height={100}
-            className="size-8"
+            className="size-8 rounded-full"
           />
-          <p className="whitespace-nowrap">Dr. {patient?.name}</p>
+          <p className="whitespace-nowrap">Dr. {patient?.primaryPhysician?.name}</p>
         </div>
       );
     },
   },
   {
-    // accessorKey: "patient",
     header: "Phone",
     cell: ({ row }) => {
       const patient = row.original;
@@ -133,30 +140,32 @@ export const patientsColumn: ColumnDef<Patient>[] = [
     },
   },
   {
-    // accessorKey: "status",
     header: "Gender",
     cell: ({ row }) => {
       const patient = row.original;
       return (
-        <div className="min-w-[115px]">
+        <div className="">
           <p>
             {patient.gender}
           </p>
-          {/* <StatusBadge status={patient.gender} /> */}
         </div>
       );
     },
   },
 
   {
-    id: "actions",
-    header: () => <div className="pl-4">Actions</div>,
+    header: "Actions",
     cell: ({ row }) => {
       const patient = row.original;
 
       return (
-        <div onClick={() => deletePatient(patient.$id)} className="hover:cursor-pointer">
-          <Trash2 height={24} width={24} className="text-red-500" />
+        <div className="flex gap-8 justify-center items-center">
+          <Link href={`/admin/patients/${patient.$id}/patient`} className="hover:cursor-pointer">
+            <Eye height={24} width={24} className="" />
+          </Link>
+          <div onClick={() => deletePatient(patient.$id)} className="hover:cursor-pointer">
+            <Trash2 height={20} width={20} className="text-red-500" />
+          </div>
         </div>
       );
     },

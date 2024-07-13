@@ -24,8 +24,9 @@ import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { FileUploader } from "../FileUploader";
 import SubmitButton from "../SubmitButton";
+import { Patient } from "@/types/appwrite.types";
 
-const PatientForm = ({ user }: { user: User | undefined }) => {
+const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
     const [doctors, setDoctors] = useState<DoctorDetail[]>([]);
@@ -37,7 +38,7 @@ const PatientForm = ({ user }: { user: User | undefined }) => {
         },
     });
 
-    const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
+    const onSubmit = (flag: boolean) => async (values: z.infer<typeof PatientFormValidation>) => {
         setIsLoading(true);
         console.log(values);
 
@@ -83,8 +84,11 @@ const PatientForm = ({ user }: { user: User | undefined }) => {
             };
             const newPatient = await registerPatient(patient);
             if (newPatient) {
-                router.push(`/admin/patients`);
-                // router.push(`/patients/${user?.$id}/new-appointment`);
+                if (flag) {
+                    router.push(`/admin/appointments/new/appointment?patientId=${newPatient.$id}`);
+                } else {
+                    router.push(`/admin/patients`);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -105,7 +109,7 @@ const PatientForm = ({ user }: { user: User | undefined }) => {
     return (
         <Form {...form}>
             <form
-                onSubmit={form.handleSubmit(onSubmit)}
+                // onSubmit={form.handleSubmit(onSubmit)}
                 className="flex-1 space-y-12"
             >
                 <section className="space-y-4">
@@ -397,10 +401,11 @@ const PatientForm = ({ user }: { user: User | undefined }) => {
                 </section>
 
                 <section className="flex flex-col gap-6 xl:flex-row">
-                    <SubmitButton isLoading={isLoading}>
+                    <SubmitButton onClick={form.handleSubmit(onSubmit(false))} isLoading={isLoading}>
                         Create Patient
                     </SubmitButton>
-                    <SubmitButton isLoading={isLoading}>
+
+                    <SubmitButton onClick={form.handleSubmit(onSubmit(true))} isLoading={isLoading}>
                         Create Patient and Appointment
                     </SubmitButton>
                 </section>

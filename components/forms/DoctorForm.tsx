@@ -115,15 +115,12 @@ const DoctorForm = ({ doctor }: { doctor: Doctor | undefined }) => {
 
   const onUpdate = async (values: z.infer<typeof DoctorFormValidation>) => {
     setIsLoading(true);
-
-    console.log("Update");
-
     try {
       // Store file info in form data as
       let DPformData;
       if (
-        values.profilePicture && typeof values.profilePicture === "object" &&
-        values.profilePicture?.length > 0
+        values.profilePicture &&
+        values.profilePicture?.length > 0 && typeof values.profilePicture[0] !== "string"
       ) {
         const blobFile = new Blob([values.profilePicture[0]], {
           type: typeof values.profilePicture[0] === "object" ? values.profilePicture[0].type : "",
@@ -138,7 +135,7 @@ const DoctorForm = ({ doctor }: { doctor: Doctor | undefined }) => {
       let formData;
       if (
         values.identificationDocument &&
-        values.identificationDocument?.length > 0
+        values.identificationDocument?.length > 0 && typeof values.identificationDocument[0] !== "string"
       ) {
         const blobFile = new Blob([values.identificationDocument[0]], {
           type: typeof values.identificationDocument[0] === "object" ? values.identificationDocument[0].type : "",

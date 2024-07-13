@@ -1,10 +1,8 @@
 import Link from "next/link";
 
-import { columns } from "@/components/table/columns";
-import { DataTable } from "@/components/table/DataTable";
-import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
-import { getPatients, getRecentPatientsList } from "@/lib/actions/patient.actions";
 import { patientsColumn } from "@/components/table/columns";
+import { DataTable } from "@/components/table/DataTable";
+import { getRecentPatientsList } from "@/lib/actions/patient.actions";
 
 const PatientsPage = async () => {
     const patients = await getRecentPatientsList();

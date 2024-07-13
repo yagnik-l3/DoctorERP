@@ -8,6 +8,9 @@ const Home = ({ searchParams }: SearchParamProps) => {
 
   return (
     <div className="flex h-screen max-h-screen">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       {isAdmin && <PasskeyModal />}
 
       <section className="remove-scrollbar container my-auto">

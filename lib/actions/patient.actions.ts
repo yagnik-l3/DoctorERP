@@ -220,12 +220,12 @@ export const deletePatient = async (patientId: string) => {
 };
 
 // GET PATIENT
-export const getPatient = async (userId: string) => {
+export const getPatient = async (patientId: string) => {
     try {
         const patients = await databases.listDocuments(
             DATABASE_ID!,
             PATIENT_COLLECTION_ID!,
-            [Query.equal("userId", [userId])]
+            [Query.equal("$id", [patientId])]
         );
 
         return parseStringify(patients.documents[0]);
@@ -287,7 +287,7 @@ export const updateDoctor = async (
         updateDoctorData["licenceNumber"] = doctor.licenceNumber;
         updateDoctorData["specialization"] = doctor.specialization;
         updateDoctorData["qualifications"] = doctor.qualifications;
-        // updateDoctorData["experience"] = parseInt(doctor.experience);
+        updateDoctorData["experience"] = parseInt(doctor.experience);
         updateDoctorData["affiliations"] = doctor.affiliations;
         updateDoctorData["pastMedicalHistory"] = doctor.pastMedicalHistory;
         updateDoctorData["identificationType"] = doctor.identificationType;
@@ -300,7 +300,7 @@ export const updateDoctor = async (
             DATABASE_ID!,
             DOCTOR_COLLECTION_ID!,
             doctorId,
-            doctor
+            updateDoctorData
         );
 
         return parseStringify(doctors);
