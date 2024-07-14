@@ -10,7 +10,7 @@ const AdminPage = async () => {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
-      <Header />
+      <Header title="Doctor Dashboard" />
 
       <main className="admin-main">
         <section className="w-full space-y-4">

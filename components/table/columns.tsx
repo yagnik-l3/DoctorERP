@@ -12,7 +12,6 @@ import { Eye, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
-import { useRouter } from "next/router";
 import { Button } from "../ui/button";
 
 export const columns: ColumnDef<Appointment>[] = [

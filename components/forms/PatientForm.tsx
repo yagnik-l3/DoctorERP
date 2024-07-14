@@ -170,7 +170,7 @@ const PatientForm = ({ patient }: { patient: Patient | undefined }) => {
                 className="flex-1 space-y-12"
             >
                 <section className="space-y-4">
-                    <h1 className="header">Patient's Profile 👤</h1>
+                    <h1 className="header">Patient's Profile</h1>
                     <p className="text-dark-700">
                         Let us know more about yourself.
                     </p>

@@ -1,8 +1,7 @@
-import DoctorForm from '@/components/forms/DoctorForm'
+import EditDoctorForm from '@/components/forms/EditDoctorForm'
+import Header from '@/components/Header'
 import { getCurrentDoctor } from '@/lib/actions/auth.actions'
 import { getDoctor } from '@/lib/actions/patient.actions'
-import { account } from '@/lib/appwrite.config'
-import React from 'react'
 
 const DoctorProfile = async () => {
     const session = await getCurrentDoctor()
@@ -13,8 +12,9 @@ const DoctorProfile = async () => {
     return (
         <div className="flex h-screen max-h-screen w-full">
             <section className="remove-scrollbar container my-auto h-full overflow-auto">
+                <Header title='' />
                 <div className="sub-container max-w-[860px] flex-1 justify-between">
-                    <DoctorForm doctor={doctor} />
+                    <EditDoctorForm doctor={doctor} />
                 </div>
             </section>
         </div>

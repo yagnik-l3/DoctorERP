@@ -23,7 +23,7 @@ export default function DashboardLayout({
                     <div className="flex h-screen flex-col gap-2">
                         <div className="flex h-14 w-full items-center justify-between border-b border-dark-500 px-4 lg:h-[60px] lg:px-6">
                             <Link
-                                href="/"
+                                href="/admin"
                                 className="flex items-center text-lg font-semibold"
                             >
                                 <Image

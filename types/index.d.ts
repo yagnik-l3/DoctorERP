@@ -106,7 +106,7 @@ declare interface UpdateDoctorParams {
     identificationType: string | undefined;
     identificationNumber: string | undefined;
     identificationDocument?: FormData;
-    authPassword: string;
+    authPassword?: string;
 }
 
 declare type CreateAppointmentParams = {
