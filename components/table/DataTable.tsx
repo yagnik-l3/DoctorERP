@@ -39,7 +39,7 @@ export function DataTable<TData, TValue>({
   useEffect(() => {
     const accessKey = encryptedKey && decryptKey(encryptedKey);
 
-    if (accessKey !== process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
+    if (accessKey !== process.env.NEXT_PUBLIC_ADMIN_PASSKEY!?.toString()) {
       redirect("/");
     }
   }, [encryptedKey]);
@@ -73,8 +73,8 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
+          {table?.getRowModel()?.rows?.length ? (
+            table?.getRowModel()?.rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}

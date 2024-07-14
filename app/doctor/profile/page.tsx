@@ -5,7 +5,7 @@ import { getDoctor } from '@/lib/actions/patient.actions'
 
 const DoctorProfile = async () => {
     const session = await getCurrentDoctor()
-    console.log("session", session);
+    console.log("doctor session", session);
 
     const doctor = await getDoctor("doctorId");
 

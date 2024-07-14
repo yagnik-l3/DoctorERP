@@ -5,10 +5,15 @@ import React from 'react'
 import { Button } from './ui/button'
 import Image from 'next/image'
 import { logoutCurrentDoctor } from '@/lib/actions/auth.actions';
+import { redirect } from 'next/navigation';
 
 const Header = ({ title }: { title: string }) => {
     const logout = async () => {
-        await logoutCurrentDoctor()
+        try {
+            await logoutCurrentDoctor()
+        } catch (error) {
+            console.log('error', error);
+        }
     }
 
     return (
