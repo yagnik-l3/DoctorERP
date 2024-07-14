@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { columns, doctorColumns } from "@/components/table/columns";
+import { doctorColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentDoctorsList } from "@/lib/actions/appointment.actions";
 

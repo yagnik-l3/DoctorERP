@@ -1,16 +1,22 @@
 "use client";
 
-import Link from 'next/link'
-import React from 'react'
-import { Button } from './ui/button'
-import Image from 'next/image'
 import { logoutCurrentDoctor } from '@/lib/actions/auth.actions';
-import { redirect } from 'next/navigation';
+import { logout } from '@/redux/slices/authSlice';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { Button } from './ui/button';
 
 const Header = ({ title }: { title: string }) => {
-    const logout = async () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
+
+    const logoutUser = async () => {
         try {
-            await logoutCurrentDoctor()
+            await logoutCurrentDoctor();
+            dispatch(logout())
+            router.push('/signin');
         } catch (error) {
             console.log('error', error);
         }
@@ -34,7 +40,7 @@ const Header = ({ title }: { title: string }) => {
                 <Button variant="ghost" className="">
                     <Link href="/doctor/profile">Profile</Link>
                 </Button>
-                <Button onClick={logout} variant="ghost" className="">
+                <Button onClick={logoutUser} variant="ghost" className="">
                     Logout
                 </Button>
             </div>
