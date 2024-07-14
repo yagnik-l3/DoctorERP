@@ -1,6 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
 
+import Header from "@/components/Header";
 import { StatCard } from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
@@ -11,19 +10,7 @@ const AdminPage = async () => {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
-      <header className="admin-header">
-        <Link href="/" className="cursor-pointer">
-          <Image
-            src="/assets/icons/logo-full.svg"
-            height={32}
-            width={162}
-            alt="logo"
-            className="h-8 w-fit"
-          />
-        </Link>
-
-        <p className="text-16-semibold">Doctor Dashboard</p>
-      </header>
+      <Header />
 
       <main className="admin-main">
         <section className="w-full space-y-4">

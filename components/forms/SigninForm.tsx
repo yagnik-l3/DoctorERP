@@ -7,9 +7,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Form } from "@/components/ui/form";
-import { createUser } from "@/lib/actions/patient.actions";
 import { SigninFormValidation } from "@/lib/validation";
 
+import { signInUser } from "@/lib/actions/auth.actions";
 import "react-phone-number-input/style.css";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
@@ -30,21 +30,17 @@ export const SigninForm = () => {
     setIsLoading(true);
     console.log(values);
 
+
     try {
-      const user = {
-        email: values.email,
-        password: values.password,
-      };
+      const session = await signInUser(values.email, values.password);
+      // Store the session token somewhere (e.g. in local storage or a cookie)
+      // localStorage.setItem("sessionToken", session);
 
-      // const newUser = await createUser(user);
-
-      // if (newUser) {
-      //   router.push(`/patients/${newUser.$id}/register`);
-      // }
+      // Redirect the user to the doctor page
+      router.push("/doctor");
     } catch (error) {
-      console.log(error);
+      console.error("An error occurred while logging in:", error);
     }
-
     setIsLoading(false);
   };
 
